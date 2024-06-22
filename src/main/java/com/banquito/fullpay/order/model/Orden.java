@@ -22,7 +22,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "ORDEN")
+@Table(name = "COR_ORDEN")
 public class Orden implements Serializable {
 
     @Id

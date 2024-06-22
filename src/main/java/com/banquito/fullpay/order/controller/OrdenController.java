@@ -31,4 +31,10 @@ public class OrdenController {
         List<Orden> ordenes = ordenService.findAll();
         return ResponseEntity.ok(ordenes);
     }
+
+    @PostMapping
+    public ResponseEntity<Orden> createOrden(@RequestBody Orden orden) {
+        Orden createdOrden = ordenService.createOrden(orden);
+        return ResponseEntity.ok(createdOrden);
+    }
 }
