@@ -36,4 +36,11 @@ public class OrdenService {
             throw new RuntimeException("No existe la orden con id: " + id);
         }
     }
+
+    @Transactional
+    public void saveAll(List<Orden> ordenes) {
+        ordenRepository.saveAll(ordenes);
+    }
+
+
 }
