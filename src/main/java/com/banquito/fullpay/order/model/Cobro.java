@@ -16,7 +16,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "COR_COBRO")
+@Table(name = "COR_COBRO", schema = "cobrosrecaudos")
 public class Cobro {
 
     @Id
@@ -24,10 +24,10 @@ public class Cobro {
     @Column(name = "COD_COBRO")
     private Long codCobro;
 
-    @Column(name = "COR_COD_CUENTA", nullable = false)
+    @Column(name = "COD_CUENTA", nullable = false)
     private int corCodCuenta;
 
-    @Column(name = "COR_COD_CONTRATO", nullable = false)
+    @Column(name = "COD_CONTRATO", nullable = false)
     private int corCodContrato;
 
     @Column(name = "ASUNTO", length = 100, nullable = false)

@@ -20,7 +20,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "COR_ITEM_ORDEN")
+@Table(name = "COR_ITEM_ORDEN", schema = "cobrosrecaudos")
 public class ItemOrden implements Serializable {
 
     @Id
@@ -42,11 +42,7 @@ public class ItemOrden implements Serializable {
     private double monto;
 
     @ManyToOne
-    @JoinColumn(name = "COR_COD_ORDEN", insertable = false, updatable = false)
-    private Orden corOrden;
-
-    @ManyToOne
-    @JoinColumn(name = "COR_COD_ORDEN", referencedColumnName = "COD_ORDEN")
+    @JoinColumn(name = "COD_ORDEN", referencedColumnName = "COD_ORDEN")
     private Orden orden;
 
     public ItemOrden(Long id) {

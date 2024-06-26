@@ -25,7 +25,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "COR_ORDEN")
+@Table(name = "COR_ORDEN", schema = "cobrosrecaudos")
 public class Orden implements Serializable {
 
     @Id
