@@ -1,7 +1,6 @@
 package com.banquito.fullpay.order.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
