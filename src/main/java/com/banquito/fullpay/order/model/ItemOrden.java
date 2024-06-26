@@ -1,6 +1,7 @@
 package com.banquito.fullpay.order.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,7 +40,7 @@ public class ItemOrden implements Serializable {
     private String apellidos;
 
     @Column(name = "MONTO", nullable = false)
-    private double monto;
+    private BigDecimal monto;
 
     @ManyToOne
     @JoinColumn(name = "COD_ORDEN", referencedColumnName = "COD_ORDEN")

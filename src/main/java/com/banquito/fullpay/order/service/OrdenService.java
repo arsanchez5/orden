@@ -2,9 +2,12 @@ package com.banquito.fullpay.order.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.banquito.fullpay.order.dto.OrdenDTO;
+import com.banquito.fullpay.order.util.mapper.OrdenMapper;
 import com.banquito.fullpay.order.model.ItemOrden;
 import com.banquito.fullpay.order.model.Orden;
 import com.banquito.fullpay.order.repository.ItemOrdenRepository;
@@ -24,22 +27,22 @@ public class OrdenService {
         this.itemOrdenRepository = itemOrdenRepository;
     }
 
-    public Orden createOrden(Orden orden) {
-        return ordenRepository.save(orden);
+    public OrdenDTO createOrden(OrdenDTO ordenDTO) {
+        Orden orden = OrdenMapper.INSTANCE.toEntity(ordenDTO);
+        Orden savedOrden = ordenRepository.save(orden);
+        return OrdenMapper.INSTANCE.toDTO(savedOrden);
     }
 
-    public List<Orden> findAll() {
-        return ordenRepository.findAll();
+    public List<OrdenDTO> findAll() {
+        return ordenRepository.findAll().stream()
+                .map(OrdenMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional(Transactional.TxType.NEVER)
-    public Orden findById(Long id) {
+    public OrdenDTO findById(Long id) {
         Optional<Orden> ordenOpt = this.ordenRepository.findById(id);
-        if (ordenOpt.isPresent()) {
-            return ordenOpt.get();
-        } else {
-            throw new RuntimeException("No existe la orden con id: " + id);
-        }
+        return ordenOpt.map(OrdenMapper.INSTANCE::toDTO).orElse(null);
     }
 
     public void deleteById(Long id) {
@@ -47,23 +50,26 @@ public class OrdenService {
     }
 
     @Transactional
-    public Orden saveOrderWithItems(Orden orden, List<ItemOrden> items) {
-        Orden savedOrder = ordenRepository.save(orden);
+    public OrdenDTO saveOrderWithItems(OrdenDTO ordenDTO) {
+        Orden orden = OrdenMapper.INSTANCE.toEntity(ordenDTO);
+        Orden savedOrden = ordenRepository.save(orden);
 
-        for (ItemOrden item : items) {
-            item.setOrden(savedOrder);
+        for (ItemOrden item : savedOrden.getItems()) {
+            item.setOrden(savedOrden);
             itemOrdenRepository.save(item);
         }
 
-        return savedOrder;
+        return OrdenMapper.INSTANCE.toDTO(savedOrden);
     }
 
     @Transactional
-    public Orden associateCobro(Long orderId, Long codCobro) {
+    public OrdenDTO associateCobro(Long orderId, Long codCobro) {
         Orden orden = ordenRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Orden not found"));
 
         orden.setCodCobro(codCobro);
 
-        return ordenRepository.save(orden);
+        Orden updatedOrden = ordenRepository.save(orden);
+
+        return OrdenMapper.INSTANCE.toDTO(updatedOrden);
     }
 }

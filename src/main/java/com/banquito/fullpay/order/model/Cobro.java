@@ -1,5 +1,7 @@
 package com.banquito.fullpay.order.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,7 +36,7 @@ public class Cobro {
     private String asunto;
 
     @Column(name = "MONTO_COBRADO", nullable = false)
-    private double montoCobrado;
+    private BigDecimal montoCobrado;
 
     @Column(name = "ESTADO", length = 3, nullable = false)
     private String estado;
