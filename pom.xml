@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.banquito.fullpay</groupId>
-	<artifactId>contract</artifactId>
+	<artifactId>order</artifactId>
 	<version>0.1</version>
 	<name>order</name>
 	<description>Demo project for Spring Boot</description>
