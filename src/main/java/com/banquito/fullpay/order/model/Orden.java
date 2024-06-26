@@ -3,12 +3,15 @@ package com.banquito.fullpay.order.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -29,8 +32,8 @@ public class Orden implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "COD_ORDEN", nullable = false)
     private Long id;
-    @Column(name = "COD_COBRO_RECAUDO", nullable = false)
-    private Long codCobroRecaudo;
+    @Column(name = "COD_COBRO", nullable = false)
+    private Long codCobro;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "FECHA_INICIO", nullable = false)
     private LocalDateTime fechaInicio;
@@ -39,10 +42,9 @@ public class Orden implements Serializable {
     private LocalDateTime fechaFin;
     @Column(name = "MONTO_TOTAL", precision = 17, scale = 2, nullable = false)
     private BigDecimal montoTotal;
-    @Column(name = "RECAUDO_TOTAL", precision = 17, scale = 2, nullable = false)
-    private BigDecimal recaudoTotal;
-    @Column(name = "CUENTA_DESTINO", length = 10, nullable = false)
-    private String cuentaDestino;
+
+    @OneToMany(mappedBy = "orden", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemOrden> items;
 
     public Orden(Long id) {
         this.id = id;

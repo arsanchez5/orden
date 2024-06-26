@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+
+import com.banquito.fullpay.order.model.ItemOrden;
 import com.banquito.fullpay.order.model.Orden;
+import com.banquito.fullpay.order.repository.ItemOrdenRepository;
 import com.banquito.fullpay.order.repository.OrdenRepository;
 
 import jakarta.transaction.Transactional;
@@ -14,9 +17,11 @@ import jakarta.transaction.Transactional;
 public class OrdenService {
 
     private final OrdenRepository ordenRepository;
+    private final ItemOrdenRepository itemOrdenRepository;
 
-    public OrdenService(OrdenRepository ordenRepository) {
+    public OrdenService(OrdenRepository ordenRepository, ItemOrdenRepository itemOrdenRepository) {
         this.ordenRepository = ordenRepository;
+        this.itemOrdenRepository = itemOrdenRepository;
     }
 
     public Orden createOrden(Orden orden) {
@@ -37,10 +42,28 @@ public class OrdenService {
         }
     }
 
-    @Transactional
-    public void saveAll(List<Orden> ordenes) {
-        ordenRepository.saveAll(ordenes);
+    public void deleteById(Long id) {
+        ordenRepository.deleteById(id);
     }
 
+    @Transactional
+    public Orden saveOrderWithItems(Orden orden, List<ItemOrden> items) {
+        Orden savedOrder = ordenRepository.save(orden);
 
+        for (ItemOrden item : items) {
+            item.setOrden(savedOrder);
+            itemOrdenRepository.save(item);
+        }
+
+        return savedOrder;
+    }
+
+    @Transactional
+    public Orden associateCobro(Long orderId, Long codCobro) {
+        Orden orden = ordenRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Orden not found"));
+
+        orden.setCodCobro(codCobro);
+
+        return ordenRepository.save(orden);
+    }
 }

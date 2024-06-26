@@ -30,13 +30,24 @@ public class ItemOrden implements Serializable {
     private Long id;
     @Column(name = "NUMERO_CONTRAPARTIDA", length = 20, nullable = false)
     private String numeroContrapartida;
-    @Column(name = "MONTO", precision = 17, scale = 2, nullable = false)
-    private BigDecimal monto;
-    @Column(name = "CUENTA_DEBITO", length = 10, nullable = false)
-    private String cuentaDebito;
+    @Column(name = "CEDULA", length = 10, nullable = false)
+    private String cedula;
+
+    @Column(name = "NOMBRES", length = 50, nullable = false)
+    private String nombres;
+
+    @Column(name = "APELLIDOS", length = 50, nullable = false)
+    private String apellidos;
+
+    @Column(name = "MONTO", nullable = false)
+    private double monto;
 
     @ManyToOne
-    @JoinColumn(name = "COD_ORDEN", referencedColumnName = "COD_ORDEN", insertable = false, updatable = false)
+    @JoinColumn(name = "COR_COD_ORDEN", insertable = false, updatable = false)
+    private Orden corOrden;
+
+    @ManyToOne
+    @JoinColumn(name = "COR_COD_ORDEN", referencedColumnName = "COD_ORDEN")
     private Orden orden;
 
     public ItemOrden(Long id) {
